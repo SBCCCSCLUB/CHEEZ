@@ -1,3 +1,6 @@
+"""defines pieces to be used in ChessBoard class
+
+TODO maybe put in ChessBoard.py?"""
 
 
 class ChessPiece:
