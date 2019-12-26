@@ -51,32 +51,7 @@ class ChessBoard:
             for file_column_index in range(8):
                 if self.board_array[rank_row_index][file_column_index] is not None:
                     piece_fen = self.board_array[rank_row_index][file_column_index].FEN
-                    if (file_column_index + rank_row_index) % 2 != 0:
-                        return_string += piece_fen
-                    elif piece_fen == "p":
-                        return_string += "🅟"
-                    elif piece_fen == "r":
-                        return_string += "🅡"
-                    elif piece_fen == "n":
-                        return_string += "🅝"
-                    elif piece_fen == "b":
-                        return_string += "🅑"
-                    elif piece_fen == "q":
-                        return_string += "🅠"
-                    elif piece_fen == "k":
-                        return_string += "🅚"
-                    elif piece_fen == "P":
-                        return_string += "🅿"
-                    elif piece_fen == "R":
-                        return_string += "🆁"
-                    elif piece_fen == "N":
-                        return_string += "🅽"
-                    elif piece_fen == "B":
-                        return_string += "🅱"
-                    elif piece_fen == "Q":
-                        return_string += "🆀"
-                    elif piece_fen == "K":
-                        return_string += "🅺"
+                    return_string += piece_fen
                 elif (file_column_index + rank_row_index) % 2 != 0:
                     return_string += " "
                 else:
