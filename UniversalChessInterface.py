@@ -10,3 +10,10 @@ Reads User move from:
     TODO computer vision
 TODO Updates GUI representation of any move (User or Engine)
 """
+
+import ChessBoard
+
+board = ChessBoard.ChessBoard()
+board.populate_start()
+piece = board.delete("e8")
+print(board.export_to_board_representation())
