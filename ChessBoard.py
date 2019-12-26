@@ -47,18 +47,49 @@ class ChessBoard:
 
     def export_to_board_representation(self):
         return_string = ""
-        for rank_row in self.board_array:
-            for file_column in rank_row:
-                if file_column is not None:
-                    return_string += file_column.FEN
-                else:
+        for rank_row_index in range(7, -1, -1):
+            for file_column_index in range(8):
+                if self.board_array[rank_row_index][file_column_index] is not None:
+                    piece_fen = self.board_array[rank_row_index][file_column_index].FEN
+                    if (file_column_index + rank_row_index) % 2 != 0:
+                        return_string += piece_fen
+                    elif piece_fen == "p":
+                        return_string += "🅟"
+                    elif piece_fen == "r":
+                        return_string += "🅡"
+                    elif piece_fen == "n":
+                        return_string += "🅝"
+                    elif piece_fen == "b":
+                        return_string += "🅑"
+                    elif piece_fen == "q":
+                        return_string += "🅠"
+                    elif piece_fen == "k":
+                        return_string += "🅚"
+                    elif piece_fen == "P":
+                        return_string += "🅿"
+                    elif piece_fen == "R":
+                        return_string += "🆁"
+                    elif piece_fen == "N":
+                        return_string += "🅽"
+                    elif piece_fen == "B":
+                        return_string += "🅱"
+                    elif piece_fen == "Q":
+                        return_string += "🆀"
+                    elif piece_fen == "K":
+                        return_string += "🅺"
+                elif (file_column_index + rank_row_index) % 2 != 0:
                     return_string += " "
+                else:
+                    return_string += "█"
             return_string += "\r\n"
         return return_string
 
     def export_to_fen(self):
-        """:returns string of Forsyth–Edwards Notation"""
-        return_string = 1
+        """:returns string of Forsyth–Edwards Notation
+
+        TODO finish"""
+        return_string = ""
+        return return_string
 
     def access_by_rank_and_file(self, rank, file):
         return self.board_array[rank - 1][(ord(file) % 32) - 1]
