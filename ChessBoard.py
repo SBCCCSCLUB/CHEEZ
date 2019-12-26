@@ -15,10 +15,17 @@ class ChessBoard:
             Instead, use the available functions
     """
     def __init__(self):
+        self.turn = None
         self.board_array = [[None for i in range(8)] for j in range(8)]
 
     def populate_start(self):
-        """sets up the board with a standard game"""
+        """sets up the board with a new standard game"""
+        # place pieces
+        self.add_start_pieces()
+        # set color to move next
+        self.turn = 'w'
+
+    def add_start_pieces(self):
         # pawns
         for i in range(65, 73):
             self.add_by_rank_and_file(ChessPawn('w'), 2, chr(i))
@@ -45,7 +52,27 @@ class ChessBoard:
         self.add_by_rank_and_file(ChessKing('w'), 1, 'e')
         self.add_by_rank_and_file(ChessKing('b'), 8, 'e')
 
+    def setup_from_fen(self, fen_string):
+        # build/clear the board
+        self.board_array = [[None for i in range(8)] for j in range(8)]
+        # parse fen_string
+        fen_fields = str(fen_string).split(" ")
+        fen_board = fen_fields[0].split("/")
+        # place the pieces on the board
+        rank_index = 7  # fen_board_index = 7 - rank_index
+        while rank_index >= 0:
+            file_index = 0
+            for character in fen_board[7 - rank_index]:
+                if character.isnumeric():
+                    file_index += int(character)
+                else:
+                    self.board_array[rank_index][file_index] = piece_from_fen(character)
+                    file_index += 1
+            rank_index -= 1
+        # set the other fields
+
     def export_to_board_representation(self):
+        """:returns string of the current board state row by row"""
         return_string = ""
         for rank_row_index in range(7, -1, -1):
             for file_column_index in range(8):
@@ -60,10 +87,31 @@ class ChessBoard:
         return return_string
 
     def export_to_fen(self):
-        """:returns string of Forsyth–Edwards Notation
+        """:returns string of Forsyth–Edwards Notation of current board state
 
         TODO finish"""
         return_string = ""
+        # board from rank 8 -> 1
+        for rank_row_index in range(7, -1, -1):
+            none_count = 0
+            for file_column_index in range(8):
+                if self.board_array[rank_row_index][file_column_index] is not None:
+                    if none_count > 0:
+                        return_string += str(none_count)
+                        none_count = 0
+                    return_string += self.board_array[rank_row_index][file_column_index].FEN
+                else:
+                    none_count += 1
+            if none_count > 0:
+                return_string += str(none_count)
+                none_count -= none_count
+            if rank_row_index > 0:
+                return_string += "/"
+        # active color
+        # castling availability
+        # en passant target
+        # Halfmove clock
+        # Fullmove number
         return return_string
 
     def access_by_rank_and_file(self, rank, file):
@@ -85,6 +133,31 @@ class ChessBoard:
 
     def delete(self, file_first_str):
         return self.delete_by_rank_and_file(int(str(file_first_str)[1]), str(file_first_str)[0])
+
+
+def piece_from_fen(fen_character):
+    fen_character = str(fen_character[0])
+    # find the color
+    color = 'b'
+    if fen_character.isupper():
+        color = 'w'
+    # lowercase
+    fen_character = fen_character.lower()
+    # find the piece
+    if fen_character == 'p':
+        return ChessPawn(color)
+    elif fen_character == 'b':
+        return ChessBishop(color)
+    elif fen_character == 'n':
+        return ChessKnight(color)
+    elif fen_character == 'r':
+        return ChessRook(color)
+    elif fen_character == 'k':
+        return ChessKing(color)
+    elif fen_character == 'q':
+        return ChessQueen(color)
+    else:
+        return None
 
 
 class ChessPiece:
