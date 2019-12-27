@@ -15,11 +15,15 @@ import ChessBoard
 
 board = ChessBoard.ChessBoard()
 board.populate_start()
+
+print(board.export_to_board_representation())
+
 piece = board.delete("e2")
 board.add(piece, "e4")
 
 fen = board.export_to_fen()
 print(fen)
+print(board.export_to_board_representation())
 
 del board
 
@@ -28,3 +32,4 @@ newBoard.setup_from_fen(fen)
 
 newFEN = newBoard.export_to_fen()
 print(newFEN)
+print(newBoard.export_to_board_representation())

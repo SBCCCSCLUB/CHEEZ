@@ -20,45 +20,23 @@ class ChessBoard:
 
     def populate_start(self):
         """sets up the board with a new standard game"""
-        # place pieces
-        self.add_start_pieces()
-        # set color to move next
-        self.turn = 'w'
-
-    def add_start_pieces(self):
-        # pawns
-        for i in range(65, 73):
-            self.add_by_rank_and_file(ChessPawn('w'), 2, chr(i))
-            self.add_by_rank_and_file(ChessPawn('b'), 7, chr(i))
-        # bishops
-        self.add_by_rank_and_file(ChessBishop('w'), 1, 'c')
-        self.add_by_rank_and_file(ChessBishop('w'), 1, 'f')
-        self.add_by_rank_and_file(ChessBishop('b'), 8, 'c')
-        self.add_by_rank_and_file(ChessBishop('b'), 8, 'f')
-        # knights
-        self.add_by_rank_and_file(ChessKnight('w'), 1, 'b')
-        self.add_by_rank_and_file(ChessKnight('w'), 1, 'g')
-        self.add_by_rank_and_file(ChessKnight('b'), 8, 'b')
-        self.add_by_rank_and_file(ChessKnight('b'), 8, 'g')
-        # rooks
-        self.add_by_rank_and_file(ChessRook('w'), 1, 'a')
-        self.add_by_rank_and_file(ChessRook('w'), 1, 'h')
-        self.add_by_rank_and_file(ChessRook('b'), 8, 'a')
-        self.add_by_rank_and_file(ChessRook('b'), 8, 'h')
-        # queens
-        self.add_by_rank_and_file(ChessQueen('w'), 1, 'd')
-        self.add_by_rank_and_file(ChessQueen('b'), 8, 'd')
-        # kings
-        self.add_by_rank_and_file(ChessKing('w'), 1, 'e')
-        self.add_by_rank_and_file(ChessKing('b'), 8, 'e')
+        self.setup_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     def setup_from_fen(self, fen_string):
         # build/clear the board
         self.board_array = [[None for i in range(8)] for j in range(8)]
         # parse fen_string
         fen_fields = str(fen_string).split(" ")
-        fen_board = fen_fields[0].split("/")
         # place the pieces on the board
+        self.add_pieces_by_fen_board_field(fen_fields[0])
+        # set other fields if they exist
+        if len(fen_fields) > 1:
+            # set color of next turn
+            self.turn = fen_fields[1]
+            # set castle ability
+
+    def add_pieces_by_fen_board_field(self, fen_board_field):
+        fen_board = fen_board_field.split("/")
         rank_index = 7  # fen_board_index = 7 - rank_index
         while rank_index >= 0:
             file_index = 0
@@ -69,7 +47,6 @@ class ChessBoard:
                     self.board_array[rank_index][file_index] = piece_from_fen(character)
                     file_index += 1
             rank_index -= 1
-        # set the other fields
 
     def export_to_board_representation(self):
         """:returns string of the current board state row by row"""
@@ -136,6 +113,9 @@ class ChessBoard:
 
 
 def piece_from_fen(fen_character):
+    """get appropriate piece child object from representative FEN character
+
+    :returns ChessPiece child object"""
     fen_character = str(fen_character[0])
     # find the color
     color = 'b'
