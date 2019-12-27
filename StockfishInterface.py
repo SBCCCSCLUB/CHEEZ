@@ -4,30 +4,28 @@ import time
 engine = subprocess.Popen(
     'stockfish_10_x64.exe',
     universal_newlines=True,
+    bufsize=1,
     stdin=subprocess.PIPE,
     stdout=subprocess.PIPE,
 )
 
 
 def put(command):
-    print('\nyou:\n\t' + command)
-    engine.stdin.write(command + '\n')
+    print('\nyou:\n\t'+command)
+    engine.stdin.write(command+'\n')
 
 
 def get():
     # using the 'isready' command (engine has to answer 'readyok')
     # to indicate current last line of stdout
-    # engine.stdin.write('isready\r\n')
+    engine.stdin.write('isready\n')
     print('\nengine:')
-    print(engine.stdout.readlines())
-    engine.stdin.write('isready\r\n')
-
-    #     if text == 'readyok':
-    #         break
-    #     if text !='':
-    #         print('\t'+text)
-    # # for line in engine.stdout:
-    # #     print(line)
+    while True:
+        text = engine.stdout.readline().strip()
+        if text == 'readyok':
+            break
+        if text !='':
+            print('\t'+text)
 
 
 skill_level = 20
