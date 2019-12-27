@@ -14,7 +14,6 @@ TODO Updates GUI representation of any move (User or Engine)
 import ChessBoard
 
 board = ChessBoard.ChessBoard()
-board.populate_start()
 
 print(board.export_to_board_representation())
 
@@ -27,8 +26,7 @@ print(board.export_to_board_representation())
 
 del board
 
-newBoard = ChessBoard.ChessBoard()
-newBoard.setup_from_fen(fen)
+newBoard = ChessBoard.ChessBoard(fen)
 
 newFEN = newBoard.export_to_fen()
 print(newFEN)

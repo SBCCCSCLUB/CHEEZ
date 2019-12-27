@@ -14,9 +14,10 @@ class ChessBoard:
         rank/file index should not be confused with rank/file as they are 0-7 rather than 1-8/A-H
             Instead, use the available functions
     """
-    def __init__(self):
+    def __init__(self, fen_string="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"):
         self.turn = None
-        self.board_array = [[None for i in range(8)] for j in range(8)]
+        self.board_array = [[]]
+        self.setup_from_fen(fen_string)
 
     def populate_start(self):
         """sets up the board with a new standard game"""
