@@ -53,3 +53,6 @@ class StockfishInterface:
         self.get()
         # self.put('stop')
         # self.get()
+
+    def fen_start(self, fen_string):
+        self.position = "position fen " + fen_string
