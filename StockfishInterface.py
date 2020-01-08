@@ -6,7 +6,7 @@ class StockfishInterface:
     def __init__(self, skill_level=20):
         # define the engine
         self.engine = subprocess.Popen(
-            'stockfish_10_x64.exe',
+            'stockfish',
             universal_newlines=True,
             bufsize=1,
             stdin=subprocess.PIPE,
