@@ -27,6 +27,15 @@ class ChessGUI:
         self.root = tk.Tk()
         self.root.geometry("832x832")
         self.root.title = "CHEEZ"
+        #self.root.iconbitmap(default='ardulan.ico')
+
+        # Create & Configure root
+        tk.Grid.rowconfigure(self.root, 0, weight=1)
+        tk.Grid.columnconfigure(self.root, 0, weight=1)
+
+        # Create & Configure frame
+        self.frame = tk.Frame(self.root)
+        self.frame.grid(row=0, column=0, sticky='nw')
 
         self.root.update()
 
@@ -52,34 +61,38 @@ class ChessGUI:
         image_name += ".gif"
         return image_name
 
-    def populate_squares(self, event=""):
-        self.root.unbind_all("<Configure>")
+    def populate_squares(self):
+        # self.root.unbind_all("<Configure>")
         new_tk_photo_image_array = []
         rank_row_index: int
         for rank_row_index in range(7, -1, -1):
+            tk.Grid.rowconfigure(self.frame, rank_row_index, weight=1)
             file_column_index: int
             for file_column_index in range(8):
+                tk.Grid.columnconfigure(self.frame, file_column_index, weight=1)
                 image_name = self.get_image_name(rank_row_index, file_column_index)
                 image = Image.open(image_name)
                 xsize = int(self.root.winfo_width() / 8) - 4
+                #print(xsize)
                 ysize = int(self.root.winfo_height() / 8) - 4
+                #print(ysize)
                 if (xsize != 100) or (ysize != 100):
                     image = image.resize((xsize, ysize))
                 tk_photo_image: PhotoImage = ImageTk.PhotoImage(image)
                 new_tk_photo_image_array.append(tk_photo_image)
-                label = tk.Label(self.root, image=tk_photo_image)
-                label.grid(row=rank_row_index, column=file_column_index)
+                label = tk.Label(self.frame, image=tk_photo_image)
+                label.grid(row=rank_row_index, column=file_column_index, sticky='nw')
             # self.root.update()
         self.tk_photo_image_array = new_tk_photo_image_array
-        print(event)
         self.root.update()
-        time.sleep(1)
-        self.root.bind("<Configure>", self.populate_squares)
+        # self.root.bind("<Configure>", self.populate_squares)
 
 
 board = ChessBoard.ChessBoard("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1")
 GUI = ChessGUI(board)
 
-root = tk.Tk()
+# GUI.root.mainloop()
 
-root.mainloop()
+while True:
+    GUI.populate_squares()
+    time.sleep(5)
