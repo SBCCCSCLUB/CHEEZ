@@ -49,7 +49,7 @@ class StockfishInterface:
         self.put(self.position)
         self.get()
         self.put('go movetime 1000')
-        time.sleep(1.1)
+        time.sleep(1)
         self.get()
         # self.put('stop')
         # self.get()
