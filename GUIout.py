@@ -6,19 +6,26 @@ basically it shows the ChessBoard Object's current state
 
 TODO write it"""
 
-from Tkinter import Tk, Frame, Canvas
-import ImageTk
+import ChessBoard
+import tkinter as tk
 
-t = Tk()
-t.title("Transparency")
 
-frame = Frame(t)
-frame.pack()
+class ChessGUI:
+    def __init__(self, chess_board: ChessBoard.ChessBoard):
+        self.this_board = chess_board
+        for row in self.this_board.board_array:
+            for square in row:
+                if square is not None:
+                    print(square.FEN)
+                else:
+                    print()
 
-canvas = Canvas(frame, bg="black", width=500, height=500)
-canvas.pack()
 
-photoimage = ImageTk.PhotoImage(file="chessPieces/bdd.png")
-canvas.create_image(150, 150, image=photoimage)
+board = ChessBoard.ChessBoard()
+GUI = ChessGUI(board)
 
-t.mainloop()
+root = tk.Tk()
+image = tk.PhotoImage(file="chessPieces/bdd.gif")
+label = tk.Label(image=image)
+label.place(x=100, y=100)
+root.mainloop()
