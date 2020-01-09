@@ -33,11 +33,14 @@ class AL5D:
         self.CST_ANGLE_MAX = 180
         self.CST_RC_MIN = 500
         self.CST_RC_MAX = 2500
+        # post process physical limit angles
+        self.minAngles = [0, 0, 21, 0, 0, 0]  # TODO populate minimum allowable angles
+        self.maxAngles = [180, 180, 180, 180, 180, 180]  # TODO populate maximum allowable angles
 
         self.current_angles = [0, 90, 90, 90, 0, 0]
 
     def go_home(self, time_to=10):
-        self.current_angles = [0, 160, 40, 100, 0]
+        self.current_angles = [0, 150, 21, 100, 0]
         arm.write_angles_to_servos(arm.current_angles, time_to)
         time.sleep(time_to)
 
@@ -46,11 +49,23 @@ class AL5D:
         pulse = ard_map(angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX, self.CST_RC_MIN, self.CST_RC_MAX)
         return int(pulse)
 
+    def check_angles_in_physical_range(self, angle_array):
+        for servo_index in range(len(angle_array)):
+            if angle_array[servo_index] < self.minAngles[servo_index]:
+                angle_array[servo_index] = self.minAngles[servo_index]
+                print("!Warn: Angle on servo " + str(servo_index) + "below physical capability. Setting to " +
+                      str(angle_array[servo_index]))
+            elif angle_array[servo_index] > self.maxAngles[servo_index]:
+                angle_array[servo_index] = self.maxAngles[servo_index]
+                print("!Warn: Angle on servo " + str(servo_index) + "above physical capability. Setting to " +
+                      str(angle_array[servo_index]))
+
     def write_angles_to_servos(self, angle_array, time_to_complete):
         """writes input angles from array to the servo corresponding to their index"""
-        print("angle array: " + str(angle_array))
+        print("input angle array: " + str(angle_array))
+
         # Get values from angles to pulses (µs)
-        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 37)
+        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 36)
         pulse_shoulder = self.get_pulse_from_angle(angle_array[1] - 10)
         pulse____elbow = self.get_pulse_from_angle(180 - angle_array[2])
         pulse____wrist = self.get_pulse_from_angle(angle_array[3])
