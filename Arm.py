@@ -50,7 +50,7 @@ class AL5D:
         """writes input angles from array to the servo corresponding to their index"""
         print("angle array: " + str(angle_array))
         # Get values from angles to pulses (µs)
-        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 36)
+        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 37)
         pulse_shoulder = self.get_pulse_from_angle(angle_array[1] - 10)
         pulse____elbow = self.get_pulse_from_angle(180 - angle_array[2])
         pulse____wrist = self.get_pulse_from_angle(angle_array[3])
