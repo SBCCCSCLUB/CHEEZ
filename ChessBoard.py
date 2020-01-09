@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """This file defines the ChessBoard class whose object holds the current position of all pieces
 
 default starts with pieces in standard starting position

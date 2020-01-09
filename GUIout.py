@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """NOT GUI interface of UCI, Instead actual GUI to represent board digitally
 
 use for debugging and digital representation of the board without arm

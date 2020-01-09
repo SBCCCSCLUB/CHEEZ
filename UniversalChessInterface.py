@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """This program acts as a Chess GUI interface
 
 TODO Maintains the digital and physical board:
