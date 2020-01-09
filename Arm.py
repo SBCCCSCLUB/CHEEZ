@@ -43,7 +43,7 @@ class AL5D:
     def write_angles_to_servos(self, angle_array, time_to_complete):
         """writes input angles from array to the servo corresponding to their index"""
         # Get values from angles to pulses (µs)
-        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 45)
+        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 35)
         pulse_shoulder = self.get_pulse_from_angle(angle_array[1])
         pulse____elbow = self.get_pulse_from_angle(180 - angle_array[2])
         pulse____wrist = self.get_pulse_from_angle(angle_array[3])
@@ -102,8 +102,17 @@ class AL5D:
 
 arm = AL5D()
 arm.write_angles_to_servos(arm.current_angles, 10)
-servo = input("enter servo number: ")
-while servo.isnumeric():
-    arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+
+
+while input("continue?") == "y":
+    x = input("x: ")
+    y = input("y: ")
+    z = input("z: ")
+    arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
     arm.write_angles_to_servos(arm.current_angles, 10)
-    servo = input("enter servo number: ")
+
+# servo = input("enter servo number: ")
+# while servo.isnumeric():
+#     arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+#     arm.write_angles_to_servos(arm.current_angles, 10)
+#     servo = input("enter servo number: ")
