@@ -37,6 +37,7 @@ class AL5D:
 
     def go_home(self):
         self.current_angles = [0, 160, 40, 100, 0]
+        arm.write_angles_to_servos(arm.current_angles, 10)
 
     def get_pulse_from_angle(self, angle):
         angle = ard_constrain(angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX)
@@ -45,6 +46,7 @@ class AL5D:
 
     def write_angles_to_servos(self, angle_array, time_to_complete):
         """writes input angles from array to the servo corresponding to their index"""
+        print("angle array: " + str(angle_array))
         # Get values from angles to pulses (µs)
         pulse_____base = self.get_pulse_from_angle(angle_array[0] + 36)
         pulse_shoulder = self.get_pulse_from_angle(angle_array[1] - 10)
