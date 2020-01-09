@@ -16,9 +16,10 @@ sp.write("#3 P1500\r".encode())
 sp.write("#4 P1500\r".encode())
 sp.write("#5 P1500\r".encode())
 
-while input("continue?(y) ") == "y":
-    motor = str(input("motor number(0..5): "))
+motor = str(input("motor number(0..5 or n to stop): "))
+while motor.isnumeric():
     sp.write(("#" + motor + " P" + str(input("Pos " + motor + ": ")) + "\r").encode())
+    motor = str(input("motor number(0..5 or n to stop): "))
 
 # Set all motors to idle/unpowered (pulse = 0)
 print("< Idling motors... >")
