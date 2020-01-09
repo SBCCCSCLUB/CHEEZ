@@ -125,12 +125,16 @@ class AL5D:
     def angles_from_cartesian(self, x, y, z):
         """returns array of angles based on x, y, z (in mm from 0, 0, 0 at shoulder)"""
         radius = math.sqrt(x * x + z * z)
+        print("radius")
+        print(radius)
         # set theta
         theta = 0
         if x > 0:
             theta += math.atan(z / x) * self.rad_to_deg  # theta += arcsin(opposite / adjacent)
         else:
             theta = 90 - math.atan(x / z) * self.rad_to_deg
+        print("theta")
+        print(theta)
         # now use cylindrical function
         return self.angles_from_cylindrical(radius, theta, y)
 
@@ -150,15 +154,15 @@ arm = AL5D()
 arm.write_angles_to_servos(arm.current_angles, 10)
 
 
-# while input("continue?") == "y":
-#     x = input("x: ")
-#     y = input("y: ")
-#     z = input("z: ")
-#     arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
-#     arm.write_angles_to_servos(arm.current_angles, 10)
-
-servo = input("enter servo number: ")
-while servo.isnumeric():
-    arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+while input("continue?") == "y":
+    x = input("x: ")
+    y = input("y: ")
+    z = input("z: ")
+    arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
     arm.write_angles_to_servos(arm.current_angles, 10)
-    servo = input("enter servo number: ")
+
+# servo = input("enter servo number: ")
+# while servo.isnumeric():
+#     arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+#     arm.write_angles_to_servos(arm.current_angles, 10)
+#     servo = input("enter servo number: ")
