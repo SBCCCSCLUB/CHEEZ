@@ -75,16 +75,28 @@ class AL5D:
         # base
         angle_base = theta
         #
+        print("base")
+        print(angle_base)
         length_hypotenuse = math.sqrt(radius * radius + height * height)
+        print("hypotenuse")
+        print(length_hypotenuse)
         angle_hypotenuse_radius = 57.295779 * math.atan(height / radius)
+        print("angle hr")
+        print(angle_hypotenuse_radius)
         angle_a_hypotenuse = 57.295779 * math.acos((self.A * self.A - self.B * self.B + length_hypotenuse *
                                                     length_hypotenuse) / ((self.A * 2) * length_hypotenuse))
+        print("angle ah")
+        print(angle_a_hypotenuse)
         angle_elbow = 57.295779 * math.acos((self.A * self.A + self.B * self.B - length_hypotenuse *
                                              length_hypotenuse) / ((self.A * 2) * self.B))
+        print("elbow")
+        print(angle_elbow)
         angle_shoulder = angle_a_hypotenuse + angle_hypotenuse_radius
-
+        print("shoulder")
+        print(angle_shoulder)
         angle_wrist = math.fabs(90 - angle_hypotenuse_radius)  # (wa - Elbow - Shoulder) - 90
-
+        print("wrist")
+        print(angle_wrist)
         return [angle_base, angle_elbow, angle_shoulder, angle_wrist, 0]
 
     def angles_from_cartesian(self, x, y, z):
