@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # 2017-05-26 by scharette
 # very basic example of AL5 + Python
 

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # 2017-07-12 by scharette
 # Basic 2D IK example of AL5 + Python
 
