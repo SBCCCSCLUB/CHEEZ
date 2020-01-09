@@ -21,7 +21,7 @@ def ard_map(value, min1, max1, min2, max2):
 class AL5D:
     def __init__(self):
         # open serial port
-        # self.sp = serial.Serial('/dev/ttyUSB0', 9600)
+        self.sp = serial.Serial('/dev/ttyUSB0', 9600)
         # set constant values
         self.A = 146.1  # mm  # shoulder_to_elbow
         self.B = 187.3  # mm  # elbow_to_wrist
@@ -65,8 +65,8 @@ class AL5D:
 
         for i in write:
             print(i)
-        # for i in write:
-        #     self.sp.write(i.encode())
+        for i in write:
+            self.sp.write(i.encode())
 
     def angles_from_cylindrical(self, radius, theta, height):
         """returns array of angles based on radius (in mm), theta (in degrees), height (in mm)"""
