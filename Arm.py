@@ -35,6 +35,9 @@ class AL5D:
 
         self.current_angles = [0, 90, 90, 90, 0, 0]
 
+    def go_home(self):
+        self.current_angles = [0, 160, 40, 100, 0]
+
     def get_pulse_from_angle(self, angle):
         angle = ard_constrain(angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX)
         pulse = ard_map(angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX, self.CST_RC_MIN, self.CST_RC_MAX)
@@ -43,8 +46,8 @@ class AL5D:
     def write_angles_to_servos(self, angle_array, time_to_complete):
         """writes input angles from array to the servo corresponding to their index"""
         # Get values from angles to pulses (µs)
-        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 35)
-        pulse_shoulder = self.get_pulse_from_angle(angle_array[1])
+        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 36)
+        pulse_shoulder = self.get_pulse_from_angle(angle_array[1] - 10)
         pulse____elbow = self.get_pulse_from_angle(180 - angle_array[2])
         pulse____wrist = self.get_pulse_from_angle(angle_array[3])
         pulse_____grab = self.get_pulse_from_angle(angle_array[4])
@@ -110,6 +113,17 @@ class AL5D:
             theta = 90 - math.atan(x / z) * self.rad_to_deg
         # now use cylindrical function
         return self.angles_from_cylindrical(radius, theta, y)
+
+    def __del__(self):
+        print("< Returning Home... >")
+        self.go_home()
+        # Set all motors to idle/unpowered (pulse = 0)
+        print("< Idling motors... >")
+        for i in range(0, 6):
+            print(("#" + str(i) + " P" + str(0) + "\r").encode())
+            self.sp.write(("#" + str(i) + " P" + str(0) + "\r").encode())
+        print("< Done >")
+        del self.sp
 
 
 arm = AL5D()
