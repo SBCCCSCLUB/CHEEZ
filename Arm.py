@@ -63,6 +63,7 @@ class AL5D:
     def write_angles_to_servos(self, angle_array, time_to_complete):
         """writes input angles from array to the servo corresponding to their index"""
         print("input angle array: " + str(angle_array))
+        self.check_angles_in_physical_range(angle_array)
 
         # Get values from angles to pulses (µs)
         pulse_____base = self.get_pulse_from_angle(angle_array[0] + 36)
