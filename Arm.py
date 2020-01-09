@@ -104,6 +104,6 @@ arm = AL5D()
 arm.write_angles_to_servos(arm.current_angles, 10)
 servo = input("enter servo number: ")
 while servo.isnumeric():
-    arm.current_angles[int(servo)] = input("enter angle in degrees: ")
+    arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
     arm.write_angles_to_servos(arm.current_angles, 10)
     servo = input("enter servo number: ")
