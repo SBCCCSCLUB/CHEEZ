@@ -120,7 +120,7 @@ class AL5D:
         angle_wrist = math.fabs(90 - angle_hypotenuse_radius)  # (wa - Elbow - Shoulder) - 90
         print("wrist")
         print(angle_wrist)
-        return [angle_base, angle_elbow, angle_shoulder, angle_wrist, 0]
+        return [angle_base, angle_shoulder, angle_elbow, angle_wrist, 0]
 
     def angles_from_cartesian(self, x, y, z):
         """returns array of angles based on x, y, z (in mm from 0, 0, 0 at shoulder)"""
