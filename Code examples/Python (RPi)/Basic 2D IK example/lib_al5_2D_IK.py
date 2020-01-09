@@ -41,15 +41,15 @@ def getPulseFromAngle(angle):
 	return (int(pulse));
 
 #def al5_2D_IK(targetX, targetY, targetZ, targetGrip, targetWAgl, targetWRot):
-def al5_2D_IK(targetXYZGWAWR):
+def al5_2D_IK(targetXYZGrabWAWR):
 
 	# Initialize variables
-	x = targetXYZGWAWR[0]
-	y = targetXYZGWAWR[1]
-	z = targetXYZGWAWR[2]
-	g = targetXYZGWAWR[3]
-	wa = targetXYZGWAWR[4]
-	wr = targetXYZGWAWR[5]
+	x = targetXYZGrabWAWR[0]
+	y = targetXYZGrabWAWR[1]
+	z = targetXYZGrabWAWR[2]
+	g = targetXYZGrabWAWR[3]
+	wa = targetXYZGrabWAWR[4]
+	wr = targetXYZGrabWAWR[5]
 	Elbow = 0
 	Shoulder = 0
 	Wrist = 0
@@ -73,21 +73,21 @@ def al5_2D_IK(targetXYZGWAWR):
 	
 	# Get 2nd angle (radians)
 	floatA2 = acos((A * A - B * B + floatM * floatM) / ((A * 2) * floatM))
-#	print("floatA2       = " + str(floatA2))
+	#	print("floatA2       = " + str(floatA2))
 	
 	# Calculate elbow angle (radians)
 	floatElbow = acos((A * A + B * B - floatM * floatM) / ((A * 2) * B))
-#	print("floatElbow    = " + str(floatElbow))
+	#	print("floatElbow    = " + str(floatElbow))
 	
 	# Calculate shoulder angle (radians)
 	floatShoulder = floatA1 + floatA2
-#	print("floatShoulder = " + str(floatShoulder))
+	# print("floatShoulder = " + str(floatShoulder))
 	
 	# Obtain angles for shoulder / elbow
 	Elbow = floatElbow * rtod
-#	print("Elbow         = " + str(floatA2))
+	# print("Elbow         = " + str(floatA2))
 	Shoulder = floatShoulder * rtod
-#	print("Shoulder      = " + str(Shoulder))
+	# print("Shoulder      = " + str(Shoulder))
 	
 	# Check elbow/shoulder angle for error
 	if((Elbow <= 0) or (Shoulder <= 0)):
@@ -95,40 +95,41 @@ def al5_2D_IK(targetXYZGWAWR):
 	Wrist = fabs(wa - Elbow - Shoulder) - 90
 	
 	# Return the new values
-	motors_SEWBZWrG = (Shoulder, Elbow, Wrist, z, g, wr)
+	motors_SEWBZWrGrab = (Shoulder, Elbow, Wrist, z, g, wr)
 	
 	# <<< debug <<<
-	#print("SHOULDER\tELBOW   \tWRIST-A \tBASE-ROT\tGRIPPER \tWRIST-R \t")
-	#print(str(Shoulder) + "\t" + str((180 - Elbow)) + "\t" + str((180 - Wrist)) + "\t" + str(z) + "\t" + str(g) + "\t" + str(wr) + "\t")
-	#print(str(getPulseFromAngle(Shoulder)) + "\t" + str(getPulseFromAngle(180 - Elbow)) + "\t" + str(getPulseFromAngle(180 - Wrist)) + "\t" + str(getPulseFromAngle(z)) + "\t" + str(getPulseFromAngle(g)) + "\t" + str(getPulseFromAngle(wr)) + "\t")
+	# print("SHOULDER\tELBOW   \tWRIST-A \tBASE-ROT\tGRIPPER \tWRIST-R \t")
+	# print(str(Shoulder) + "\t" + str((180 - Elbow)) + "\t" + str((180 - Wrist)) + "\t" + str(z) + "\t" + str(g) + "\t" + str(wr) + "\t")
+	# print(str(getPulseFromAngle(Shoulder)) + "\t" + str(getPulseFromAngle(180 - Elbow)) + "\t" + str(getPulseFromAngle(180 - Wrist)) + "\t" + str(getPulseFromAngle(z)) + "\t" + str(getPulseFromAngle(g)) + "\t" + str(getPulseFromAngle(wr)) + "\t")
 	# >>> debug >>>
 	
-	return (motors_SEWBZWrG)
+	return (motors_SEWBZWrGrab)
 
-def al5_moveMotors(motors_SEWBZWrG, speed_SEWBZWrG, serial):
+
+def al5_moveMotors(motors_SEWBZWrGrab, speed_SEWBZWrGrab, serial):
 	
 	# Get values from angles to pulses (µs)
-	pulseShoulder = getPulseFromAngle(motors_SEWBZWrG[0])
-	pulseElbow = getPulseFromAngle((180 - motors_SEWBZWrG[1]))
-	pulseWrist = getPulseFromAngle((180 - motors_SEWBZWrG[2]))
-	pulseZ = getPulseFromAngle(motors_SEWBZWrG[3])
-	pulseG = getPulseFromAngle(motors_SEWBZWrG[4])
-	pulseWR = getPulseFromAngle(motors_SEWBZWrG[5])
+	pulseShoulder = getPulseFromAngle(motors_SEWBZWrGrab[0])
+	pulseElbow = getPulseFromAngle((180 - motors_SEWBZWrGrab[1]))
+	pulseWrist = getPulseFromAngle((180 - motors_SEWBZWrGrab[2]))
+	pulseZ = getPulseFromAngle(motors_SEWBZWrGrab[3])
+	pulseGrab = getPulseFromAngle(motors_SEWBZWrGrab[4])
+	pulseWR = getPulseFromAngle(motors_SEWBZWrGrab[5])
 	
 	# Get values from speeds
-	speedShoulder = speed_SEWBZWrG[0]
-	speedElbow = speed_SEWBZWrG[1]
-	speedWrist = speed_SEWBZWrG[2]
-	speedZ = speed_SEWBZWrG[3]
-	speedG = speed_SEWBZWrG[4]
-	speedWR = speed_SEWBZWrG[5]
+	speedShoulder = speed_SEWBZWrGrab[0]
+	speedElbow = speed_SEWBZWrGrab[1]
+	speedWrist = speed_SEWBZWrGrab[2]
+	speedZ = speed_SEWBZWrGrab[3]
+	speedGrab = speed_SEWBZWrGrab[4]
+	speedWR = speed_SEWBZWrGrab[5]
 	
 	# Write values to SSC-32U
 	serial.write(("#0 P" + str(pulseZ) + " S" + str(speedZ) + "\r").encode())
 	serial.write(("#1 P" + str(pulseShoulder) + " S" + str(speedShoulder) + "\r").encode())
 	serial.write(("#2 P" + str(pulseElbow) + " S" + str(speedElbow) + "\r").encode())
 	serial.write(("#3 P" + str(pulseWrist) + " S" + str(speedWrist) + "\r").encode())
-	serial.write(("#4 P" + str(pulseG) + " S" + str(speedG) + "\r").encode())
+	serial.write(("#4 P" + str(pulseGrab) + " S" + str(speedGrab) + "\r").encode())
 	serial.write(("#5 P" + str(pulseWR) + " S" + str(speedWR) + "\r").encode())
 	
 	return

@@ -45,7 +45,7 @@ speed_SEWBZWrG = (CST_SPEED_DEFAULT, CST_SPEED_DEFAULT, CST_SPEED_DEFAULT, CST_S
 
 # Set the arm to default centered position (careful of sudden movement)
 print("Default position is " + str(AL5_DefaultPos) + ".")
-for i in range(0,6):
+for i in range(0, 6):
 	print(("#" + str(i) + " P" + str(AL5_DefaultPos) + "\r").encode())
 	sp.write(("#" + str(i) + " P" + str(AL5_DefaultPos) + "\r").encode())
 
@@ -91,7 +91,7 @@ while cont:
 
 # Set all motors to idle/unpowered (pulse = 0)
 print("< Idling motors... >");
-for i in range(0,6):
+for i in range(0, 6):
 	print(("#" + str(i) + " P" + str(0) + "\r").encode())
 	sp.write(("#" + str(i) + " P" + str(0) + "\r").encode())
 print("< Done >")
