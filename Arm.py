@@ -43,18 +43,18 @@ class AL5D:
     def write_angles_to_servos(self, angle_array, time_to_complete):
         """writes input angles from array to the servo corresponding to their index"""
         # Get values from angles to pulses (µs)
-        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 5)
-        pulse_shoulder = self.get_pulse_from_angle(180 - angle_array[1])
+        pulse_____base = self.get_pulse_from_angle(angle_array[0] + 45)
+        pulse_shoulder = self.get_pulse_from_angle(angle_array[1])
         pulse____elbow = self.get_pulse_from_angle(180 - angle_array[2])
         pulse____wrist = self.get_pulse_from_angle(angle_array[3])
         pulse_____grab = self.get_pulse_from_angle(angle_array[4])
 
         # Get values from speeds
-        speed_____base = pulse_____base / time_to_complete / 10
-        speed_shoulder = pulse_shoulder / time_to_complete / 10
-        speed____elbow = pulse____elbow / time_to_complete / 10
-        speed____wrist = pulse____wrist / time_to_complete / 10
-        speed_____grab = pulse_____grab / time_to_complete / 10
+        speed_____base = pulse_____base / time_to_complete
+        speed_shoulder = pulse_shoulder / time_to_complete
+        speed____elbow = pulse____elbow / time_to_complete
+        speed____wrist = pulse____wrist / time_to_complete
+        speed_____grab = pulse_____grab / time_to_complete
 
         # Write values to SSC-32U
         write = []
