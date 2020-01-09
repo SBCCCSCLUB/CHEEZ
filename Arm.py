@@ -3,6 +3,7 @@
 
 import math
 import serial
+import time
 
 
 def ard_constrain(value, min, max):
@@ -35,9 +36,10 @@ class AL5D:
 
         self.current_angles = [0, 90, 90, 90, 0, 0]
 
-    def go_home(self):
+    def go_home(self, time_to=10):
         self.current_angles = [0, 160, 40, 100, 0]
-        arm.write_angles_to_servos(arm.current_angles, 10)
+        arm.write_angles_to_servos(arm.current_angles, time_to)
+        time.sleep(time_to)
 
     def get_pulse_from_angle(self, angle):
         angle = ard_constrain(angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX)
@@ -118,7 +120,7 @@ class AL5D:
 
     def __del__(self):
         print("< Returning Home... >")
-        self.go_home()
+        self.go_home(2)
         # Set all motors to idle/unpowered (pulse = 0)
         print("< Idling motors... >")
         for i in range(0, 6):
