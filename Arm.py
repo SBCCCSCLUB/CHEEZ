@@ -38,6 +38,7 @@ class AL5D:
         self.maxAngles = [180, 180, 180, 180, 180, 180]  # TODO populate maximum allowable angles
 
         self.current_angles = [0, 90, 90, 90, 0, 0]
+        self.go_home()
 
     def go_home(self, time_to=10):
         self.current_angles = [0, 170, 25, 120, 0]
@@ -104,18 +105,38 @@ class AL5D:
         # calculate length of hypotenuse (shoulder to wrist)
         length_hypotenuse = math.sqrt(radius * radius + height * height)
         print("     Length:  Hypotenuse: " + str(length_hypotenuse))
+        #
         angle_hypotenuse_radius = 57.295779 * math.atan(height / radius)
         print("      Angle: between the Horizon and the Hypotenuse: " + str(angle_hypotenuse_radius))
-        angle_a_hypotenuse = 57.295779 * math.acos((self.A * self.A - self.B * self.B + length_hypotenuse *
-                                                    length_hypotenuse) / ((self.A * 2) * length_hypotenuse))
+        #
+        angle_a_hypotenuse_ratio = (self.A * self.A - self.B * self.B + length_hypotenuse * length_hypotenuse) \
+                                   / ((self.A * 2) * length_hypotenuse)
+        if angle_a_hypotenuse_ratio >= 1:
+            angle_a_hypotenuse_ratio = 1
+            print("!Warn: ah ratio greater than 1")
+        elif angle_a_hypotenuse_ratio <= -1:
+            angle_a_hypotenuse_ratio = -1
+            print("!Warn: ah ratio less than -1")
+        angle_a_hypotenuse = 57.295779 * math.acos(angle_a_hypotenuse_ratio)
         print("      Angle: between A and Hypotenuse: " + str(angle_a_hypotenuse))
-        angle_elbow = 57.295779 * math.acos((self.A * self.A + self.B * self.B - length_hypotenuse *
-                                             length_hypotenuse) / ((self.A * 2) * self.B))
+        #
+        angle_elbow_ratio = (self.A * self.A + self.B * self.B - length_hypotenuse * length_hypotenuse)\
+                            / ((self.A * 2) * self.B)
+        if angle_elbow_ratio >= 1:
+            angle_elbow_ratio = 1
+            print("!Warn: elbow ratio greater than 1")
+        elif angle_elbow_ratio <= -1:
+            angle_elbow_ratio = -1
+            print("!Warn: elbow ratio less than -1")
+        angle_elbow = 57.295779 * math.acos(angle_elbow_ratio)
         print("Servo Angle:       Elbow: " + str(angle_elbow))
+        #
         angle_shoulder = angle_a_hypotenuse + angle_hypotenuse_radius
         print("Servo Angle:    Shoulder: " + str(angle_shoulder))
+        #
         angle_wrist = math.fabs(270 - angle_a_hypotenuse - angle_hypotenuse_radius - angle_elbow)
         print("Servo Angle:       Wrist: " + str(angle_wrist))
+        #
         print("< Done >")
         return [angle_base, angle_shoulder, angle_elbow, angle_wrist, 0]
 
@@ -154,7 +175,6 @@ class AL5D:
 arm = AL5D()
 time.sleep(2)
 arm.write_angles_to_servos(arm.current_angles, 30)
-
 
 # while input("Continue?(y/n) ") == "y":
 #     x = input("x: ")
