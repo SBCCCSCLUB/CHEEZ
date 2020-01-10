@@ -152,14 +152,21 @@ class AL5D:
 
 
 arm = AL5D()
-arm.write_angles_to_servos(arm.current_angles, 20)
+arm.write_angles_to_servos(arm.current_angles, 30)
 
+
+# while input("Continue?(y/n) ") == "y":
+#     x = input("x: ")
+#     y = input("y: ")
+#     z = input("z: ")
+#     arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
+#     arm.write_angles_to_servos(arm.current_angles, 10)
 
 while input("Continue?(y/n) ") == "y":
-    x = input("x: ")
-    y = input("y: ")
-    z = input("z: ")
-    arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
+    radius = input("radius: ")
+    theta = input("theta: ")
+    height = input("height: ")
+    arm.current_angles = arm.angles_from_cylindrical(radius, theta, height)
     arm.write_angles_to_servos(arm.current_angles, 10)
 
 # servo = input("enter servo number: ")
