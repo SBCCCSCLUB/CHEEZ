@@ -155,15 +155,15 @@ arm = AL5D()
 arm.write_angles_to_servos(arm.current_angles, 20)
 
 
-# while input("Continue?(y/n) ") == "y":
-#     x = input("x: ")
-#     y = input("y: ")
-#     z = input("z: ")
-#     arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
-#     arm.write_angles_to_servos(arm.current_angles, 10)
-
-servo = input("enter servo number: ")
-while servo.isnumeric():
-    arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+while input("Continue?(y/n) ") == "y":
+    x = input("x: ")
+    y = input("y: ")
+    z = input("z: ")
+    arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
     arm.write_angles_to_servos(arm.current_angles, 10)
-    servo = input("enter servo number: ")
+
+# servo = input("enter servo number: ")
+# while servo.isnumeric():
+#     arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+#     arm.write_angles_to_servos(arm.current_angles, 10)
+#     servo = input("enter servo number: ")
