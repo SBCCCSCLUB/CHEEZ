@@ -95,48 +95,49 @@ class AL5D:
 
     def angles_from_cylindrical(self, radius, theta, height):
         """returns array of angles based on radius (in mm), theta (in degrees), height (in mm)"""
-        # base
+        print("< Calculating Motor Angles from Cylindrical... >")
+        # TODO prevent use of coordinates out of range
+        # do math
+        # Base is just theta
         angle_base = theta
-        #
-        print("base")
-        print(angle_base)
+        print("Servo Angle:        Base: " + str(angle_base))
+        # calculate length of hypotenuse (shoulder to wrist)
         length_hypotenuse = math.sqrt(radius * radius + height * height)
-        print("hypotenuse")
-        print(length_hypotenuse)
+        print("     Length:  Hypotenuse: " + str(length_hypotenuse))
         angle_hypotenuse_radius = 57.295779 * math.atan(height / radius)
-        print("angle hr")
-        print(angle_hypotenuse_radius)
+        print("      Angle: between the Horizon and the Hypotenuse: " + str(angle_hypotenuse_radius))
         angle_a_hypotenuse = 57.295779 * math.acos((self.A * self.A - self.B * self.B + length_hypotenuse *
                                                     length_hypotenuse) / ((self.A * 2) * length_hypotenuse))
-        print("angle ah")
-        print(angle_a_hypotenuse)
+        print("      Angle: between A and Hypotenuse: " + str(angle_a_hypotenuse))
         angle_elbow = 57.295779 * math.acos((self.A * self.A + self.B * self.B - length_hypotenuse *
                                              length_hypotenuse) / ((self.A * 2) * self.B))
-        print("elbow")
-        print(angle_elbow)
+        print("Servo Angle:       Elbow: " + str(angle_elbow))
         angle_shoulder = angle_a_hypotenuse + angle_hypotenuse_radius
-        print("shoulder")
-        print(angle_shoulder)
+        print("Servo Angle:    Shoulder: " + str(angle_shoulder))
         angle_wrist = math.fabs(90 - angle_hypotenuse_radius)  # (wa - Elbow - Shoulder) - 90
-        print("wrist")
-        print(angle_wrist)
+        print("Servo Angle:       Wrist: " + str(angle_wrist))
+        print("< Done >")
         return [angle_base, angle_shoulder, angle_elbow, angle_wrist, 0]
 
-    def angles_from_cartesian(self, x, y, z):
-        """returns array of angles based on x, y, z (in mm from 0, 0, 0 at shoulder)"""
-        radius = math.sqrt(x * x + z * z)
-        print("radius")
-        print(radius)
-        # set theta
+    def angles_from_cartesian(self, x_mm, y_mm, z_mm):
+        """returns array of angles based on x_mm, y_mm, z_mm (in mm from 0, 0, 0 at shoulder)"""
+        print("< Calculating Cylindrical Coordinates from Cartesian... >")
+        # TODO prevent use of coordinates out of range
+        # calculate radius
+        radius = math.sqrt(x_mm * x_mm + z_mm * z_mm)
+        print("Radius: " + str(radius))
+        # calculate theta
         theta = 0
-        if x > 0:
-            theta += math.atan(z / x) * self.rad_to_deg  # theta += arcsin(opposite / adjacent)
+        if x_mm > 0:
+            theta += math.atan(z_mm / x_mm) * self.rad_to_deg  # theta += arcsin(opposite / adjacent)
         else:
-            theta = 90 - math.atan(x / z) * self.rad_to_deg
-        print("theta")
-        print(theta)
+            theta = 90 - math.atan(x_mm / z_mm) * self.rad_to_deg
+        print(" Theta: " + str(theta))
+        # print height
+        print("Height: " + str(y_mm))
         # now use cylindrical function
-        return self.angles_from_cylindrical(radius, theta, y)
+        print("< Done >")
+        return self.angles_from_cylindrical(radius, theta, y_mm)
 
     def __del__(self):
         print("< Returning Home... >")
@@ -151,10 +152,10 @@ class AL5D:
 
 
 arm = AL5D()
-arm.write_angles_to_servos(arm.current_angles, 10)
+arm.write_angles_to_servos(arm.current_angles, 20)
 
 
-while input("continue?") == "y":
+while input("< continue? (y/n) >") == "y":
     x = input("x: ")
     y = input("y: ")
     z = input("z: ")
