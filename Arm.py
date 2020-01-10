@@ -42,7 +42,7 @@ class AL5D:
 
     def go_home(self, time_to=10):
         self.current_angles = [0, 170, 25, 120, 0]
-        arm.write_angles_to_servos(arm.current_angles, time_to)
+        self.write_angles_to_servos(self.current_angles, time_to)
         time.sleep(time_to)
 
     def get_pulse_from_angle(self, angle):
