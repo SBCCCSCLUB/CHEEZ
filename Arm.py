@@ -40,7 +40,7 @@ class AL5D:
         self.current_angles = [0, 90, 90, 90, 0, 0]
 
     def go_home(self, time_to=10):
-        self.current_angles = [0, 150, 21, 100, 0]
+        self.current_angles = [0, 170, 25, 120, 0]
         arm.write_angles_to_servos(arm.current_angles, time_to)
         time.sleep(time_to)
 
@@ -155,15 +155,15 @@ arm = AL5D()
 arm.write_angles_to_servos(arm.current_angles, 20)
 
 
-# while input("Continue?(y/n) ") == "y":
-#     x = input("x: ")
-#     y = input("y: ")
-#     z = input("z: ")
-#     arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
-#     arm.write_angles_to_servos(arm.current_angles, 10)
-
-servo = input("enter servo number: ")
-while servo.isnumeric():
-    arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+while input("Continue?(y/n) ") == "y":
+    x = input("x: ")
+    y = input("y: ")
+    z = input("z: ")
+    arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
     arm.write_angles_to_servos(arm.current_angles, 10)
-    servo = input("enter servo number: ")
+
+# servo = input("enter servo number: ")
+# while servo.isnumeric():
+#     arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+#     arm.write_angles_to_servos(arm.current_angles, 10)
+#     servo = input("enter servo number: ")
