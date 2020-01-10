@@ -69,7 +69,7 @@ class AL5D:
         pulse_____base = self.get_pulse_from_angle(angle_array[0] + 36)
         pulse_shoulder = self.get_pulse_from_angle(angle_array[1] - 10)
         pulse____elbow = self.get_pulse_from_angle(180 - angle_array[2])
-        pulse____wrist = self.get_pulse_from_angle(110 - angle_array[3])  # 180 - [angle from bottom of B] - 70
+        pulse____wrist = self.get_pulse_from_angle(250 - angle_array[3])  # 180 - [angle from bottom of B] + 70
         pulse_____grab = self.get_pulse_from_angle(angle_array[4])
 
         # Get values from speeds
@@ -155,15 +155,15 @@ arm = AL5D()
 arm.write_angles_to_servos(arm.current_angles, 20)
 
 
-while input("Continue?(y/n) ") == "y":
-    x = input("x: ")
-    y = input("y: ")
-    z = input("z: ")
-    arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
-    arm.write_angles_to_servos(arm.current_angles, 10)
-
-# servo = input("enter servo number: ")
-# while servo.isnumeric():
-#     arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+# while input("Continue?(y/n) ") == "y":
+#     x = input("x: ")
+#     y = input("y: ")
+#     z = input("z: ")
+#     arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
 #     arm.write_angles_to_servos(arm.current_angles, 10)
-#     servo = input("enter servo number: ")
+
+servo = input("enter servo number: ")
+while servo.isnumeric():
+    arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
+    arm.write_angles_to_servos(arm.current_angles, 10)
+    servo = input("enter servo number: ")
