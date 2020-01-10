@@ -152,6 +152,7 @@ class AL5D:
 
 
 arm = AL5D()
+time.sleep(2)
 arm.write_angles_to_servos(arm.current_angles, 30)
 
 
@@ -163,9 +164,9 @@ arm.write_angles_to_servos(arm.current_angles, 30)
 #     arm.write_angles_to_servos(arm.current_angles, 10)
 
 while input("Continue?(y/n) ") == "y":
-    radius = input("radius: ")
-    theta = input("theta: ")
-    height = input("height: ")
+    radius = int(input("radius: "))
+    theta = int(input("theta: "))
+    height = int(input("height: "))
     arm.current_angles = arm.angles_from_cylindrical(radius, theta, height)
     arm.write_angles_to_servos(arm.current_angles, 10)
 
