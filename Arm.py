@@ -69,7 +69,7 @@ class AL5D:
         pulse_____base = self.get_pulse_from_angle(angle_array[0] + 36)
         pulse_shoulder = self.get_pulse_from_angle(angle_array[1] - 10)
         pulse____elbow = self.get_pulse_from_angle(180 - angle_array[2])
-        pulse____wrist = self.get_pulse_from_angle(angle_array[3])
+        pulse____wrist = self.get_pulse_from_angle(110 - angle_array[3])  # 180 - [angle from bottom of B] - 70
         pulse_____grab = self.get_pulse_from_angle(angle_array[4])
 
         # Get values from speeds
@@ -114,7 +114,7 @@ class AL5D:
         print("Servo Angle:       Elbow: " + str(angle_elbow))
         angle_shoulder = angle_a_hypotenuse + angle_hypotenuse_radius
         print("Servo Angle:    Shoulder: " + str(angle_shoulder))
-        angle_wrist = math.fabs(90 - angle_hypotenuse_radius)  # (wa - Elbow - Shoulder) - 90
+        angle_wrist = math.fabs(270 - angle_a_hypotenuse - angle_hypotenuse_radius - angle_elbow)
         print("Servo Angle:       Wrist: " + str(angle_wrist))
         print("< Done >")
         return [angle_base, angle_shoulder, angle_elbow, angle_wrist, 0]
