@@ -38,7 +38,7 @@ class AL5D:
         self.maxAngles = [180, 180, 180, 180, 180, 180]  # TODO populate maximum allowable angles
 
         self.current_angles = [0, 90, 90, 90, 0, 0]
-        self.go_home()
+        self.go_home(1)
 
     def go_home(self, time_to=10):
         self.current_angles = [0, 170, 25, 120, 0]
