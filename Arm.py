@@ -40,7 +40,7 @@ class AL5D:
         self.current_angles = [0, 90, 90, 90, 0, 0]
         self.go_home(1)
 
-    def go_home(self, time_to=10):
+    def go_home(self, time_to=  10):
         self.current_angles = [0, 170, 25, 120, 0]
         self.write_angles_to_servos(self.current_angles, time_to)
         time.sleep(time_to)
