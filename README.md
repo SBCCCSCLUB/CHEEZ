@@ -23,6 +23,3 @@ All project discussion should be done on the dedicated slack channel:
 
 ##### Primary Project Contacts/Admins:
 - Tys vanZeyl @Tysseract <mcvanzeyl@pipeline.sbcc.edu>
-
-##### Test
-1
