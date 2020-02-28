@@ -14,8 +14,8 @@ def ard_constrain(value, min, max):
     return value
 
 # angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX, self.CST_RC_MIN, self.CST_RC_MAX
-def ard_map(value, angle_min, angle_max, rc_min, rc_max):
-    value = ((value - angle_min) * (rc_max - rc_min) / (angle_max - angle_min) + rc_min)
+def ard_map(angle, angle_min, angle_max, rc_min, rc_max):
+    value = ((angle - angle_min) * (rc_max - rc_min) / (angle_max - angle_min) + rc_min)
     return value
 
 
@@ -38,12 +38,12 @@ class AL5D:
         self.maxAngles = [180, 180, 180, 180, 180, 180]  # TODO populate maximum allowable angles
 
         self.current_angles = [0, 90, 90, 90, 0, 0]
-        self.go_home(1)
+        self.go_home(3000)
 
-    def go_home(self, time_to=  10):
+    def go_home(self, time_to=  3000):
         self.current_angles = [0, 170, 25, 120, 0]
         self.write_angles_to_servos(self.current_angles, time_to)
-        time.sleep(time_to)
+        time.sleep(time_to/1000)
 
     def get_pulse_from_angle(self, angle):
         angle = ard_constrain(angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX)
@@ -61,7 +61,7 @@ class AL5D:
                 print("!Warn: Angle on servo " + str(servo_index) + "above physical capability. Setting to " +
                       str(angle_array[servo_index]))
 
-    def write_angles_to_servos(self, angle_array, time_to_complete):
+    def write_angles_to_servos(self, angle_array, time_to_complete =3000):
         """writes input angles from array to the servo corresponding to their index"""
         print("input angle array: " + str(angle_array))
         self.check_angles_in_physical_range(angle_array)
@@ -73,20 +73,21 @@ class AL5D:
         pulse____wrist = self.get_pulse_from_angle(250 - angle_array[3])  # 180 - [angle from bottom of B] + 70
         pulse_____grab = self.get_pulse_from_angle(angle_array[4])
 
-        # Get values from speeds
-        speed_____base = pulse_____base / time_to_complete
-        speed_shoulder = pulse_shoulder / time_to_complete
-        speed____elbow = pulse____elbow / time_to_complete
-        speed____wrist = pulse____wrist / time_to_complete
-        speed_____grab = pulse_____grab / time_to_complete
+        # map angles to real world value
+        # angle_array[0] = int(10*(angle_array[0] + 36))
+        # angle_array[1] = int(10*(angle_array[1] - 10))
+        # angle_array[2] = int(10*(180 - angle_array[2]))
+        # angle_array[3] = int(10*(250 - angle_array[3]))  # 180 - [angle from bottom of B] + 70
+        # angle_array[4] = int(10*(angle_array[4]))
 
         # Write values to SSC-32U
         write = []
-        write.append("#0 P" + str(pulse_____base) + " S" + str(speed_____base) + "\r")
-        write.append("#1 P" + str(pulse_shoulder) + " S" + str(speed_shoulder) + "\r")
-        write.append("#2 P" + str(pulse____elbow) + " S" + str(speed____elbow) + "\r")
-        write.append("#3 P" + str(pulse____wrist) + " S" + str(speed____wrist) + "\r")
-        write.append("#4 P" + str(pulse_____grab) + " S" + str(speed_____grab) + "\r")
+        write.append("#0P" + str(pulse_____base)
+         + "T" + str(time_to_complete) + "\r")
+        write.append("#1P" + str(pulse_shoulder) + "T" + str(time_to_complete) + "\r")
+        write.append("#2P" + str(pulse____elbow) + "T" + str(time_to_complete) + "\r")
+        write.append("#3P" + str(pulse____wrist) + "T" + str(time_to_complete) + "\r")
+        write.append("#4P" + str(pulse_____grab) + "T" + str(time_to_complete) + "\r")
         # write[5] = "#5 P" + str(pulseWR) + " S" + str(speedWR) + "\r"
 
         for i in write:
@@ -162,7 +163,7 @@ class AL5D:
 
     def __del__(self):
         print("< Returning Home... >")
-        self.go_home(2)
+        self.go_home(2000)
         # Set all motors to idle/unpowered (pulse = 0)
         print("< Idling motors... >")
         for i in range(0, 6):
@@ -174,7 +175,7 @@ class AL5D:
 
 arm = AL5D()
 time.sleep(2)
-arm.write_angles_to_servos(arm.current_angles, 30)
+arm.write_angles_to_servos(arm.current_angles, 1000)
 
 while input("Continue?(y/n) ") == "y":
     while input("Cartesian   | Continue?(y/n) ") == "y":
@@ -182,18 +183,18 @@ while input("Continue?(y/n) ") == "y":
         y = input("y: ")
         z = input("z: ")
         arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
-        arm.write_angles_to_servos(arm.current_angles, 10)
+        arm.write_angles_to_servos(arm.current_angles, 1000)
 
     while input("Cylindrical | Continue?(y/n) ") == "y":
         radius = int(input("radius: "))
         theta = int(input("theta: "))
         height = int(input("height: "))
         arm.current_angles = arm.angles_from_cylindrical(radius, theta, height)
-        arm.write_angles_to_servos(arm.current_angles, 10)
+        arm.write_angles_to_servos(arm.current_angles, 1000)
 
     while input("Servos      | Continue?(y/n) ") == "y":
         servo = input("enter servo number: ")
         while servo.isnumeric() and int(servo) <= 4 and int(servo) >= 0:
             arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
-            arm.write_angles_to_servos(arm.current_angles, 10)
+            arm.write_angles_to_servos(arm.current_angles, 1000)
             servo = input("enter servo number: ")
