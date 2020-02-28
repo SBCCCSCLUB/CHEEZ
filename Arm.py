@@ -13,9 +13,9 @@ def ard_constrain(value, min, max):
         value = max
     return value
 
-
-def ard_map(value, min1, max1, min2, max2):
-    value = ((value - min1) * (max2 - min2) / (max1 - min1) + min2)
+# angle, self.CST_ANGLE_MIN, self.CST_ANGLE_MAX, self.CST_RC_MIN, self.CST_RC_MAX
+def ard_map(value, angle_min, angle_max, rc_min, rc_max):
+    value = ((value - angle_min) * (rc_max - rc_min) / (angle_max - angle_min) + rc_min)
     return value
 
 
@@ -31,7 +31,7 @@ class AL5D:
         # CST RC values
         self.CST_ANGLE_MIN = 0
         self.CST_ANGLE_MAX = 180
-        self.CST_RC_MIN = 700
+        self.CST_RC_MIN = 500
         self.CST_RC_MAX = 2500
         # post process physical limit angles
         self.minAngles = [0, 0, 21, 0, 0, 0]  # TODO populate minimum allowable angles
