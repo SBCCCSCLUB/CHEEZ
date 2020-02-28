@@ -176,24 +176,24 @@ arm = AL5D()
 time.sleep(2)
 arm.write_angles_to_servos(arm.current_angles, 30)
 
-while input("Continue?(y/n) ") != "n":
-    while input("Cartesian   | Continue?(y/n) ") != "n":
+while input("Continue?(y/n) ") == "y":
+    while input("Cartesian   | Continue?(y/n) ") == "y":
         x = input("x: ")
         y = input("y: ")
         z = input("z: ")
         arm.current_angles = arm.angles_from_cartesian(int(x), int(y), int(z))
         arm.write_angles_to_servos(arm.current_angles, 10)
 
-    while input("Cylindrical | Continue?(y/n) ") != "n":
+    while input("Cylindrical | Continue?(y/n) ") == "y":
         radius = int(input("radius: "))
         theta = int(input("theta: "))
         height = int(input("height: "))
         arm.current_angles = arm.angles_from_cylindrical(radius, theta, height)
         arm.write_angles_to_servos(arm.current_angles, 10)
 
-    while input("Servos      | Continue?(y/n) ") != "n":
+    while input("Servos      | Continue?(y/n) ") == "y":
         servo = input("enter servo number: ")
-        while servo.isnumeric() and servo <= 4 and servo >= 0:
+        while servo.isnumeric() and int(servo) <= 4 and int(servo) >= 0:
             arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
             arm.write_angles_to_servos(arm.current_angles, 10)
             servo = input("enter servo number: ")
