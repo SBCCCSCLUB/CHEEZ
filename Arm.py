@@ -193,7 +193,7 @@ while input("Continue?(y/n) ") != "n":
 
     while input("Servos      | Continue?(y/n) ") != "n":
         servo = input("enter servo number: ")
-        while servo.isnumeric():
+        while servo.isnumeric() and servo <= 4 and servo >= 0:
             arm.current_angles[int(servo)] = int(input("enter angle in degrees: "))
             arm.write_angles_to_servos(arm.current_angles, 10)
             servo = input("enter servo number: ")
