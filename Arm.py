@@ -31,7 +31,7 @@ class AL5D:
         # CST RC values
         self.CST_ANGLE_MIN = 0
         self.CST_ANGLE_MAX = 180
-        self.CST_RC_MIN = 500
+        self.CST_RC_MIN = 700
         self.CST_RC_MAX = 2500
         # post process physical limit angles
         self.minAngles = [0, 0, 21, 0, 0, 0]  # TODO populate minimum allowable angles
